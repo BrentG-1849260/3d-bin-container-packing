@@ -211,6 +211,10 @@ public class LargestAreaFitFirstPackager extends Packager {
 		}
 
 		Space[] spaces = getFreespaces(freeSpace, usedSpace);
+		if (!usedSpace.getRotate()) {
+			spaces[2] = null;
+			spaces[3] = null;
+		}
 
 		Placement primaryPlacement = getBestBoxAndSpace(containerProducts, spaces, holder.getFreeWeight());
 		if(primaryPlacement == null) {
@@ -597,7 +601,7 @@ public class LargestAreaFitFirstPackager extends Packager {
 				continue;
 			}
 			if(rotate3D) {
-				if(box.canFitInside3D(space)) {
+				if((box.getRotate() && box.canFitInside3D(space)) || box.fitsInside3D(space)) {
 					if(bestBox == null || isBetter3D(bestBox, box, space) < 0) {
 						bestBox = box;
 					}

@@ -2,21 +2,42 @@ package com.github.skjolber.packing;
 
 public class Box extends Dimension {
 	final int weight;
+	private final boolean rotate;
 
 	public Box(int w, int d, int h, int weight) {
 		super(w, d, h);
 
 		this.weight = weight;
+		this.rotate = true;
+	}
+
+	public Box(int w, int d, int h, int weight, boolean rotate) {
+		super(w, d, h);
+
+		this.weight = weight;
+		this.rotate = rotate;
 	}
 
 	public Box(String name, int w, int d, int h, int weight) {
 		super(name, w, d, h);
 
 		this.weight = weight;
+		this.rotate = true;
+	}
+
+	public Box(String name, int w, int d, int h, int weight, boolean rotate) {
+		super(name, w, d, h);
+
+		this.weight = weight;
+		this.rotate = rotate;
 	}
 
 	public Box(final Dimension dimension, final Integer weight) {
-		this(dimension.width, dimension.depth, dimension.height, weight);
+		this(dimension.width, dimension.depth, dimension.height, weight, true);
+	}
+
+	public Box(final Dimension dimension, final Integer weight, boolean rotate) {
+		this(dimension.width, dimension.depth, dimension.height, weight, rotate);
 	}
 
 	/**
@@ -25,12 +46,13 @@ public class Box extends Dimension {
 	 * @return this instance
 	 */
 	public Box rotate3D() {
-		int height = this.height;
+		if (rotate) {
+			int height = this.height;
 
-		this.height = width;
-		this.width = depth;
-		this.depth = height;
-
+			this.height = width;
+			this.width = depth;
+			this.depth = height;
+		}
 		return this;
 	}
 
@@ -102,7 +124,10 @@ public class Box extends Dimension {
 		}
 
 		if (h < height) {
-			throw new IllegalArgumentException("Expected height " + height + " to fit within height constraint " + h);
+			if (rotate)
+				throw new IllegalArgumentException("Expected height " + height + " to fit within height constraint " + h);
+			else
+				return false;
 		}
 
 		if (width > w || depth > d) {
@@ -111,7 +136,10 @@ public class Box extends Dimension {
 		}
 
 		if (width > w || depth > d) {
-			throw new IllegalArgumentException("Expected width " + width + " and depth " + depth + " to fit within constraint width " + w + " and depth " + d);
+			if (rotate)
+				throw new IllegalArgumentException("Expected width " + width + " and depth " + depth + " to fit within constraint width " + w + " and depth " + d);
+			else
+				return false;
 		}
 
 		return true;
@@ -176,7 +204,10 @@ public class Box extends Dimension {
 		}
 
 		if (h < height) {
-			throw new IllegalArgumentException("Expected height " + height + " to fit within height constraint " + h);
+			if (rotate)
+				throw new IllegalArgumentException("Expected height " + height + " to fit within height constraint " + h);
+			else
+				return false;
 		}
 
 		if (width > w || depth > d) {
@@ -185,7 +216,10 @@ public class Box extends Dimension {
 		}
 
 		if (width > w || depth > d) {
-			throw new IllegalArgumentException("Expected width " + width + " and depth " + depth + " to fit within constraint width " + w + " and depth " + d);
+			if (rotate)
+				throw new IllegalArgumentException("Expected width " + width + " and depth " + depth + " to fit within constraint width " + w + " and depth " + d);
+			else
+				return false;
 		}
 
 		return true;
@@ -210,7 +244,7 @@ public class Box extends Dimension {
 	}
 
 	public Box clone() {
-		return new Box(name, width, depth, height, weight);
+		return new Box(name, width, depth, height, weight, rotate);
 	}
 
 	/**
@@ -220,34 +254,36 @@ public class Box extends Dimension {
 	 */
 
 	public Box rotate2D() {
-		int depth = this.depth;
+		if (rotate) {
+			int depth = this.depth;
 
-		this.depth = width;
-		this.width = depth;
-
+			this.depth = width;
+			this.width = depth;
+		}
 		return this;
 	}
 
 	public Box rotate2D3D() {
-		//rotate2D();
-		// width -> depth
-		// depth -> width
+		if (rotate) {
+			//rotate2D();
+			// width -> depth
+			// depth -> width
 
-		//rotate3D();
-		// height = width;
-		// width = depth;
-		// depth = height;
+			//rotate3D();
+			// height = width;
+			// width = depth;
+			// depth = height;
 
-		// so
-		// height -> width -> depth;
-		// width -> depth -> width;
-		// depth -> height;
+			// so
+			// height -> width -> depth;
+			// width -> depth -> width;
+			// depth -> height;
 
-		int depth = this.depth;
+			int depth = this.depth;
 
-		this.depth = height;
-		this.height = depth;
-
+			this.depth = height;
+			this.height = depth;
+		}
 		return this;
 	}
 
@@ -255,10 +291,11 @@ public class Box extends Dimension {
 		return weight;
 	}
 
+	public boolean getRotate() { return rotate; }
+
 	@Override
 	public String toString() {
 		return "Box [width=" + width + ", depth=" + depth + ", height=" + height + ", volume="
 				+ volume + ", name=" + name + ", weight=" + weight + "]";
 	}
-
 }

@@ -16,6 +16,13 @@ So while the algorithm will not produce the theoretically optimal result (which 
 In short, the library provides a service which is __usually good enough, in time and reasonably user-friendly__ ;-)
 
 Bugs, feature suggestions and help requests can be filed with the [issue-tracker].
+
+## Modifications in this fork
+`Box` was given an optional `rotate` boolean variable. If this variable is false, the Box will not be rotated
+regardless of the "global" `rotate3D` variable. To make this work, some checks were added to `LargestAreaFitFirstPackager`
+and `DefaultPermutationManager`. So anytime `Box.getRotate()` is used, it is a modification made in this fork. This rotation
+prevention only works when `rotate3D` is true. If it is false, all boxes will still be rotated in 2D, regardless of
+the `rotate` variable.
  
 ## Obtain
 The project is implemented in Java and built using [Maven]. The project is available on the central Maven repository.

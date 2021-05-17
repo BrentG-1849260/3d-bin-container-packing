@@ -48,7 +48,7 @@ public class DefaultPermutationRotationIterator implements PermutationRotationIt
 			} else {
 				Box box0 = box.clone();
 				result.add(box0);
-				
+
 				// do not rotate 2d if square
 				if(!box0.isSquare2D()) {
 					result.add(box0.clone().rotate2D());
