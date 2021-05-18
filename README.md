@@ -23,6 +23,9 @@ regardless of the "global" `rotate3D` variable. To make this work, some checks w
 and `DefaultPermutationManager`. So anytime `Box.getRotate()` is used, it is a modification made in this fork. This rotation
 prevention only works when `rotate3D` is true. If it is false, all boxes will still be rotated in 2D, regardless of
 the `rotate` variable.
+
+A modification in the BruteForcePackager was added to stop it from trying at other permutations (this means the boxes will
+only be packed in the order that they were given in).
  
 ## Obtain
 The project is implemented in Java and built using [Maven]. The project is available on the central Maven repository.

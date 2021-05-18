@@ -105,6 +105,7 @@ public class BruteForcePackager extends Packager {
 				}
 				
 			} while (true);
+			break; // modification: don't look at other permutations
 		} while (rotator.nextPermutation() != -1);
 
 		return result;
